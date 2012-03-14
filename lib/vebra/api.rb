@@ -14,7 +14,7 @@ module Vebra
       end
 
       def properties_url
-        branch_url + '/properties'
+        branch_url + '/property'
       end
 
       def property_url
@@ -22,7 +22,7 @@ module Vebra
       end
 
       # Compiles a url string, interpolating the dynamic components
-      def compile_url(url_string, config, interpolations={})
+      def compile(url_string, config, interpolations={})
         interpolations = config.merge(interpolations)
         url_string.gsub(/\{(\w+)\}/) do
           interpolations[($1).to_sym]
@@ -61,7 +61,7 @@ module Vebra
           # retry with basic auth
           retries += 1
           auth.delete(:token)
-          get(url, auth, retries)
+          return get(url, auth, retries)
         else
           # store the token for subsequent requests
           if response['token']

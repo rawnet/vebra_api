@@ -1,6 +1,10 @@
 module Vebra
   class Client
 
+    attr_reader :auth, :config
+
+    # DMMXDSZULPNNONAWHAZTNEMPWYZQENJAKVKCJVYQBLXPXYBABS
+
     # Initialize a new client:
     # 
     # client = Vebra::Client.new({
@@ -18,23 +22,25 @@ module Vebra
         raise "Vebra: configuration hash must include `data_feed_id`, `username`, and `password`"
       end
 
-      @auth   = { :username => username, :password => password }
-      @config = config
+      @auth     = { :username => username, :password => password }
+      @config   = config
     end
 
-    attr_reader :auth, :config
-
     # Proxy to call the appropriate methods in the API module
-    def call(api_method, interpolations={})
-      url = API.compile_url(API.send("#{api_method}_url"), @config, interpolations)
-      API.get(url, @auth)
+    def call(url_or_method, interpolations={})
+      if url_or_method.is_a?(Symbol)
+        raw = API.send("#{url_or_method}_url")
+        url = API.compile(raw, @config, interpolations)
+      end
+
+      API.get(url || url_or_method, @auth)
     end
 
     # Retrieve a list of branches
     def get_branches
-      doc = call(:branches).parsed_response
+      xml = call(:branches).parsed_response
       # build a collection of Branch objects
-      doc.css('branches branch').map { |b| Branch.new(b, self) }
+      xml.css('branches branch').map { |b| Branch.new(b, self) }
     end
 
   end

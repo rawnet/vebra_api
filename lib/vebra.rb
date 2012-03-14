@@ -2,13 +2,18 @@ require "net/http"
 require "uri"
 require "json"
 require "nokogiri"
+require "vebra/hash"
+require "vebra/mappings"
 require "vebra/api"
 require "vebra/response"
 require "vebra/client"
 require "vebra/branch"
+require "vebra/property"
 require "vebra/version"
 
 module Vebra
+
+
 
 end
 
