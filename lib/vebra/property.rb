@@ -32,7 +32,7 @@ module Vebra
     private
 
     def set_attributes!
-      @attributes.delete(:attributes)
+      @attributes[:attributes].delete(:noNamespaceSchemaLocation) if @attributes[:attributes]
       @attributes.each do |key, value|
         self.class.send(:define_method, key) do
           @attributes[key]
