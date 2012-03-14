@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<property id="23072663" propertyid="2678001" system="B" firmid="1081" branchid="2" database="2" featured="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:noNamespaceSchemaLocation="http://webservices.vebra.com/export/xsd/v3/exportapi.xsd">
+  <reference>
+    <agents />
+  </reference>
+  <address>
+    <name>23-24</name>
+    <street>Market Place</street>
+    <locality />
+    <town>Reading</town>
+    <county>Berkshire</county>
+    <postcode>RG1 2DE</postcode>
+    <custom_location>(Not Specified)</custom_location>
+    <display>Market Place, Reading, Berkshire, RG1 2DE</display>
+  </address>
+  <price qualifier="per month" currency="GBP" rent="pcm">1000</price>
+  <rm_qualifier>0</rm_qualifier>
+  <available>12/03/2012</available>
+  <uploaded>14/03/2012</uploaded>
+  <longitude>-0.969461</longitude>
+  <latitude>51.45601</latitude>
+  <easting>471594</easting>
+  <northing>173563</northing>
+  <web_status>0</web_status>
+  <custom_status>To Let</custom_status>
+  <comm_rent />
+  <premium />
+  <service_charge />
+  <rateable_value />
+  <type>House</type>
+  <type>(Not Specified)</type>
+  <furnished>0</furnished>
+  <rm_type>8</rm_type>
+  <let_bond>0</let_bond>
+  <rm_let_type_id>0</rm_let_type_id>
+  <bedrooms>4</bedrooms>
+  <receptions>2</receptions>
+  <bathrooms>0</bathrooms>
+  <userfield1 />
+  <userfield2>0</userfield2>
+  <solddate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+  <leaseend xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+  <instructed xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+  <soldprice xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+  <garden xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+  <parking xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+  <groundrent />
+  <commission />
+  <area measure="metric" unit="sqm">
+    <min>0</min>
+    <max>0</max>
+  </area>
+  <area measure="imperial" unit="sqft">
+    <min>0</min>
+    <max>0</max>
+  </area>
+  <description>Property Description</description>
+  <hip>
+    <energy_performance>
+      <energy_efficiency>
+        <current>0</current>
+        <potential>0</potential>
+      </energy_efficiency>
+      <environmental_impact>
+        <current>0</current>
+        <potential>0</potential>
+      </environmental_impact>
+    </energy_performance>
+  </hip>
+  <paragraphs>
+    <paragraph id="1" type="0">
+      <name>Bedroom 1</name>
+      <file />
+      <dimensions>
+        <metric />
+        <imperial>Double</imperial>
+        <mixed />
+      </dimensions>
+      <text />
+    </paragraph>
+    <paragraph id="2" type="0">
+      <name>Bedroom 2</name>
+      <file />
+      <dimensions>
+        <metric />
+        <imperial>Double</imperial>
+        <mixed />
+      </dimensions>
+      <text />
+    </paragraph>
+    <paragraph id="3" type="0">
+      <name>Bedroom 3</name>
+      <file />
+      <dimensions>
+        <metric />
+        <imperial>Double</imperial>
+        <mixed />
+      </dimensions>
+      <text />
+    </paragraph>
+    <paragraph id="4" type="0">
+      <name>Bedroom 4</name>
+      <file />
+      <dimensions>
+        <metric />
+        <imperial>Single</imperial>
+        <mixed />
+      </dimensions>
+      <text />
+    </paragraph>
+    <paragraph id="5" type="0">
+      <name>Reception 1</name>
+      <file />
+      <dimensions>
+        <metric />
+        <imperial>Lounge</imperial>
+        <mixed />
+      </dimensions>
+      <text />
+    </paragraph>
+    <paragraph id="6" type="0">
+      <name>Reception 2</name>
+      <file />
+      <dimensions>
+        <metric />
+        <imperial>Dining Room</imperial>
+        <mixed />
+      </dimensions>
+      <text />
+    </paragraph>
+  </paragraphs>
+  <bullets>
+    <bullet id="1">Custom bullet 1</bullet>
+    <bullet id="2">Custom bullet 2</bullet>
+    <bullet id="3">Parking permit</bullet>
+    <bullet id="4">Garage</bullet>
+    <bullet id="5">Original cast iron fireplaces</bullet>
+    <bullet id="6">Fully double glazed</bullet>
+    <bullet id="7">Detached house</bullet>
+    <bullet id="8">Semi detached house</bullet>
+    <bullet id="9">Excellent decorative order</bullet>
+    <bullet id="10">Lounge</bullet>
+  </bullets>
+  <files>
+    <file id="0" type="0">
+      <name />
+      <url>http://images.vebra.com/large/atlantis/rentals/ecimage1/002b2678001.jpg</url>
+      <updated>14/03/2012 15:11:00</updated>
+    </file>
+    <file id="1" type="7">
+      <name />
+      <url>http://images.vebra.com/atlantis/rentals/details/002b2678001.pdf</url>
+      <updated>14/03/2012 15:11:00</updated>
+    </file>
+  </files>
+</property>
