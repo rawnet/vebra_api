@@ -57,6 +57,7 @@ module Vebra
       @attributes[:furnished]     = furnished_status_lookup(@attributes[:furnished])
       @attributes[:bullets]       = @attributes[:bullets][:bullet]
       @attributes[:files]         = @attributes[:files][:file]
+      @attributes[:paragraphs]    = @attributes[:paragraphs][:paragraph]
       [ :sold_date, :lease_end, :instructed, :sold_price, :garden, :parking ].each do |nullable|
         if @attributes[nullable][:attributes] && @attributes[nullable][:attributes][:nil]
           @attributes[nullable] = nil
