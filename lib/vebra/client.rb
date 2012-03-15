@@ -3,7 +3,7 @@ module Vebra
 
     attr_reader :auth, :config
 
-    # DMMXDSZULPNNONAWHAZTNEMPWYZQENJAKVKCJVYQBLXPXYBABS
+    # NHLJQGBIQPBOOHSGQBSHPWYHBPISFIXLRWTONOYQIHPIPQEAPD
 
     # Initialize a new client:
     # 

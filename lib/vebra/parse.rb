@@ -2,12 +2,22 @@ module Vebra
   class << self
 
     def parse(nokogiri_xml)
-      customise(parse_node(nokogiri_xml.root? ? nokogiri_xml.root : nokogiri_xml))
+      customise(parse_node(nokogiri_xml))
     end
 
     private
 
     def parse_node(node)
+      # bypass the top-level document node
+      if node.respond_to?(:root?) && node.root?
+        node = node.root
+      end
+
+      if !node.respond_to?(:element?)
+        raise "ERROR!!!" if !node.respond_to?(:size) || node.size != 1
+        node = node[0]
+      end
+
       if node.element?
         # if an element, check for presence of (valid) attributes and/or children;
         # otherwise, set value to nil
@@ -29,6 +39,7 @@ module Vebra
           node_hash.delete(:attributes) if node_hash[:attributes].empty?
         end
 
+        # merge the attributes hash with the main object hash in some circumstances
         if merge_attributes.include?(node.name.to_sym) && !node_hash[:attributes].nil? && node_hash[:attributes] != {}
           node_hash = node_hash.delete(:attributes)
         end
@@ -47,8 +58,9 @@ module Vebra
             child_result = send("#{lookup}_lookup", child_result)
           end
 
+          # define or extend the attribute
           unless child_node.name == "text" && child_result.nil?
-            attr_key = (mappings[child_node.name] || child_node.name).to_sym
+            attr_key = (mappings[child_node.name] || child_node.name).downcase.to_sym
             attr_key = :value if attr_key == :text
             if !node_hash[attr_key]
               # if this attribute hasn't yet been set, set it's value
@@ -112,7 +124,9 @@ module Vebra
         'groundrent'  => 'ground_rent',
         'userfield1'  => 'user_field_1', 
         'userfield2'  => 'user_field_2' ,
-        'updated'     => 'updated_at'
+        'updated'     => 'updated_at',
+        'FirmID'      => 'firm_id',
+        'BranchID'    => 'branch_id'
       }
     end
 
