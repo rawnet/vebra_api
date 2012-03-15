@@ -5,9 +5,9 @@ module Vebra
 
     # Parse a Nokogiri XML fragment to extract the branch attributes
 
-    def initialize(xml, client)
+    def initialize(nokogiri_xml, client)
       @client     = client
-      @attributes = Vebra.xml_to_hash(xml)[:branch]
+      @attributes = Vebra.parse(nokogiri_xml)
       @attributes[:id] = @attributes[:url].match(/\/(\d+)$/)[1]
       set_attributes!
     end
@@ -16,8 +16,8 @@ module Vebra
     # attributes for this branch
 
     def get_branch
-      xml = client.call(@attributes[:url]).parsed_response.css('branch')
-      @attributes.merge!(Vebra.xml_to_hash(xml)[:branch])
+      nokogiri_xml = client.call(@attributes[:url]).parsed_response.css('branch')
+      @attributes.merge!(Vebra.parse(nokogiri_xml))
       @attributes[:address] = {
         :street   => @attributes.delete(:street),
         :town     => @attributes.delete(:town),

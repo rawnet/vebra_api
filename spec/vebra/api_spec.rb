@@ -77,4 +77,18 @@ describe Vebra::API do
     res.code.to_i.should eq(200)
   end
 
+  it "should build a Nokogiri XML object from the XML response" do
+    xml_response = File.open(File.join(File.dirname(__FILE__), '../support/sample_input.xml'), "rb").read
+    FakeWeb.register_uri(:get, 'http://user:pass@webservices.vebra.com/export/ABC/v3/branch', :body => xml_response, :token => 'ABC123')
+
+    client = Vebra::Client.new({
+      :data_feed_id => 'ABC',
+      :username     => 'user',
+      :password     => 'pass'
+    })
+
+    res = Vebra::API.get('http://webservices.vebra.com/export/ABC/v3/branch', client.auth)
+    res.parsed_response.should be_kind_of(Nokogiri::XML::Document)
+  end
+
 end

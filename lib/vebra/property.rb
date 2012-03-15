@@ -5,9 +5,9 @@ module Vebra
 
     # Parse a Nokogiri XML fragment to extract the property attributes
 
-    def initialize(xml, branch)
+    def initialize(nokogiri_xml, branch)
       @branch     = branch
-      @attributes = Vebra.xml_to_hash(xml)[:property]
+      @attributes = Vebra.parse(nokogiri_xml)
       set_attributes!
     end
 
@@ -15,8 +15,9 @@ module Vebra
     # attributes for this property
 
     def get_property
-      xml = branch.client.call(url).parsed_response.css('property')
-      @attributes.merge!(Vebra.xml_to_hash(xml)[:property])
+      res = branch.client.call(url)
+      nokogiri_xml = res.parsed_response.css('property')
+      @attributes.merge!(Vebra.parse(nokogiri_xml))
       set_attributes!
       parse_attributes!
     end
