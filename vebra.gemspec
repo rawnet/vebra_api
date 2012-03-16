@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Vebra::VERSION
 
-  gem.add_dependency "nokogiri", "~> 1.5.2"
+  gem.add_dependency "nokogiri", "~> 1.5.0"
   gem.add_development_dependency "rspec", "~> 2.8.0"
   gem.add_development_dependency "fakeweb", "~> 1.3.0"
 end
