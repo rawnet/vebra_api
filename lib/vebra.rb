@@ -12,7 +12,13 @@ require "vebra/version"
 
 module Vebra
 
+  def self.debugging?
+    @@debug ||= false
+  end
 
+  def self.debug=(true_or_false)
+    @@debug = true_or_false
+  end
 
 end
 

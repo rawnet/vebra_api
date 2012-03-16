@@ -1,13 +1,8 @@
 module Vebra
   class Property
-
-    # may extract user_field_1 as a new key, with user_field_2 as the value
-    # need to confirm :sold_date etc with values present
-    # need to easily identify if letting or sale
-
     attr_reader :attributes, :branch
 
-    # Parse a Nokogiri XML fragment to extract the property attributes
+    # property = Vebra::Property.new(nokogiri_xml_object, vebra_branch_object)
 
     def initialize(nokogiri_xml, branch)
       @branch     = branch
@@ -15,9 +10,7 @@ module Vebra
       set_attributes!
     end
 
-    # Parse an XML response using Nokogiri to extract additional
-    # attributes for this property
-
+    # Retrieve the full set of attributes for this branch
     def get_property
       nokogiri_xml = branch.client.call(url).parsed_response.css('property')
       @attributes.merge!(Vebra.parse(nokogiri_xml))
@@ -26,6 +19,7 @@ module Vebra
 
     private
 
+    # All attributes also have method readers
     def set_attributes!
       @attributes.each do |key, value|
         self.class.send(:define_method, key) do

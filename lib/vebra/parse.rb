@@ -11,6 +11,8 @@ module Vebra
 
     private
 
+    # Nokogiri XML object => Ruby hash
+
     def parse_node(node)
       # bypass the top-level (document) node
       if node.respond_to?(:root)
@@ -97,6 +99,9 @@ module Vebra
       end
     end
 
+    # As all values are initially strings, we try to convert them to
+    # Ruby objects where possible
+
     def parse_value(value)
       if value.is_a?(String)
         if value.to_i.to_s == value
@@ -117,6 +122,8 @@ module Vebra
       end
     end
 
+    # Vebra don't have consistent key names, so we map them where appropriate
+
     def mappings
       {
         'propertyid'  => 'property_id',
@@ -135,14 +142,18 @@ module Vebra
       }
     end
 
+    # These attributes should always form an array, even with only a single item
     def collections
       %w( paragraphs bullets files ).map(&:to_sym)
     end
 
+    # These attributes do not require a separate "attributes" attribute
     def merge_attributes
       %w( price area paragraph bullet file ).map(&:to_sym)
     end
 
+    # The values of these attributes are codes which are mapped via
+    # their corresponding lookup (see below)
     def lookups
       {
         'web_status' => 'property_status',
@@ -150,6 +161,7 @@ module Vebra
       }
     end
 
+    # Map the web_status code
     def property_status_lookup(code)
       case code.to_i
         when 0   then [ 'For Sale', 'To Let' ]
@@ -176,6 +188,7 @@ module Vebra
       end
     end
 
+    # Map the furnished code
     def furnished_status_lookup(code)
       case code.to_i
         when 0 then 'Furnished'
@@ -187,6 +200,7 @@ module Vebra
       end
     end
 
+    # Map the let_type code
     def let_type_lookup(code)
       case code.to_i
         when 0 then 'Not Specified'
@@ -198,12 +212,19 @@ module Vebra
       end
     end
 
+    # After parsing & converting the Nokogiri object into a Ruby hash,
+    # some additional changes are required to better structure the data
+
     def customise(hash)
+      # was: { :reference => { :agents => #<value> } }
+      # now: { :agent_reference => #<value> }
       if hash[:reference] && hash[:reference].size == 1 && hash[:reference].keys.first == :agents
         reference = hash.delete(:reference)
         hash[:agent_reference] = reference.delete(:agents)
       end
 
+      # was: { :area => [ #<area - imperial>, #<area - metric> ] }
+      # now: { :area => { :imperial => #<imperial>, :metric => #<metric> } }
       if area = hash[:area]
         hash[:area] = {}
         area.each do |a|
@@ -211,12 +232,16 @@ module Vebra
         end
       end
 
+      # was: { :bullets => [ { :value => #<value> }, { :value => #<value> } ] }
+      # now: { :bullets => [ #<value>, #<value> ] }
       if hash[:bullets]
         hash[:bullets].map! do |b|
           b[:value]
         end
       end
 
+      # was: { :paragraphs => [ #<paragraph - type a, #<paragraph - type b> ] }
+      # now: { :type_a => [ #<paragraph> ], :type_b => [ #<paragraph> ] }
       if paragraphs = hash.delete(:paragraphs)
         # extract each paragraph type into separate collections
         hash[:rooms]          = paragraphs.select { |p| p.delete(:id); p[:type] == 0; }
@@ -228,6 +253,8 @@ module Vebra
         end
       end
 
+      # was: { :files => [ #<file - type a>, #<file - type b> ] }
+      # now: { :files => { :type_a => [ #<file> ], :type_b => [ #<file> ] } }
       if files = hash.delete(:files)
         # extract each file type into separate collections
         hash[:files] = {
@@ -248,8 +275,21 @@ module Vebra
         end
       end
 
+      # was: { :hip => { :energy_performance => #<energy performance> } }
+      # now: { :energy_performance => #<energy performance> }
       if hip = hash.delete(:hip)
         hash[:energy_performance] = hip[:energy_performance]
+      end
+
+      # was: { :street => #<street>, :town => #<town>, ... }
+      # now: { :address => { :street => #<street>, :town => #<town>, ... } }
+      if !hash[:address] && hash[:street] && hash[:town] && hash[:county] && hash[:postcode]
+        hash[:address] = {
+        :street   => hash.delete(:street),
+        :town     => hash.delete(:town),
+        :county   => hash.delete(:county),
+        :postcode => hash.delete(:postcode)
+        }
       end
 
       hash

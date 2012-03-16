@@ -31,19 +31,19 @@ module Vebra
 
       # Performs the request to the Vebra API server
       def get(url, auth, retries=0)
-        puts "Vebra: requesting #{url}"
+        puts "Vebra: requesting #{url}" if Vebra.debugging?
 
-        # build request object
+        # build a Net::HTTP request object
         uri     = URI.parse(url)
         http    = Net::HTTP.new(uri.host, uri.port)
         request = Net::HTTP::Get.new(uri.request_uri)
 
-        # add authorization header
+        # add authorization header (either user/pass or token based)
         if auth[:token]
-          puts "Vebra: authorizing via token"
+          puts "Vebra: authorizing via token" if Vebra.debugging?
           request.basic_token(auth[:token])
         else
-          puts "Vebra: authorizing via basic auth"
+          puts "Vebra: authorizing via basic auth" if Vebra.debugging?
           request.basic_auth(auth[:username], auth[:password])
         end
 
@@ -52,21 +52,21 @@ module Vebra
 
         # monitor for 401, signalling that our token has expired
         if response.code.to_i == 401
-          # also monitor for multiple retries, which indicates
-          # there has been a problem and we should wait
+          # also monitor for multiple retries, in order to prevent
+          # infinite retries
           if retries >= 3
-            puts "Vebra: failed to authenticate"
-            return response
+            puts "Vebra: failed to authenticate" if Vebra.debugging?
+            return false # not sure what to return here
           end
           # retry with basic auth
           retries += 1
           auth.delete(:token)
           return get(url, auth, retries)
         else
-          # store the token for subsequent requests
+          # extract & store the token for subsequent requests
           if response['token']
             auth[:token] = response['token']
-            puts "Vebra: storing API token #{auth[:token]}"
+            puts "Vebra: storing API token #{auth[:token]}" if Vebra.debugging?
           end
         end
 
