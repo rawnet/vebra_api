@@ -1,7 +1,6 @@
 require "net/http"
 require "uri"
 require "nokogiri"
-require "vebra/mappings"
 require "vebra/parse"
 require "vebra/api"
 require "vebra/response"
