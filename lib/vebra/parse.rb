@@ -8,8 +8,8 @@ module Vebra
     private
 
     def parse_node(node)
-      # bypass the top-level document node
-      if node.respond_to?(:root?) && node.root?
+      # bypass the top-level (document) node
+      if node.respond_to?(:root)
         node = node.root
       end
 
@@ -194,7 +194,7 @@ module Vebra
     end
 
     def customise(hash)
-      if hash[:reference] && hash[:reference].keys.include?(:agents)
+      if hash[:reference] && hash[:reference].size == 1 && hash[:reference].keys.first == :agents
         reference = hash.delete(:reference)
         hash[:agent_reference] = reference.delete(:agents)
       end
@@ -218,7 +218,7 @@ module Vebra
         hash[:energy_reports] = paragraphs.select { |p| p.delete(:id); p[:type] == 1; }
         hash[:disclaimers]    = paragraphs.select { |p| p.delete(:id); p[:type] == 2; }
 
-        %w( rooms energy_reports disclaimers).map(&:to_sym).each do |paragraph_type|
+        %w( rooms energy_reports disclaimers ).map(&:to_sym).each do |paragraph_type|
           hash[paragraph_type].each { |f| f.delete(:type) }
         end
       end
@@ -238,7 +238,7 @@ module Vebra
           :info_packs          => files.select { |f| f.delete(:id); f[:type] == 10 }
         }
 
-        %w( images maps floorplans tours ehouses ipixes pdfs urls energy_certificates info_packs).map(&:to_sym).each do |file_type|
+        %w( images maps floorplans tours ehouses ipixes pdfs urls energy_certificates info_packs ).map(&:to_sym).each do |file_type|
           hash[:files][file_type].each { |f| f.delete(:type) }
         end
       end
