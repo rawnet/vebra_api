@@ -1,6 +1,10 @@
 module Vebra
   class << self
 
+    # After converting an XML document to a Nokogiri XML object,
+    # this method generates an opinionated, well-formed Ruby hash
+    # tailored specifically for Vebra output
+
     def parse(nokogiri_xml)
       customise(parse_node(nokogiri_xml))
     end
@@ -13,8 +17,9 @@ module Vebra
         node = node.root
       end
 
+      # searching within a document returns a node set, in which
+      # case we need to retrieve the first element
       if !node.respond_to?(:element?)
-        raise "ERROR!!!" if !node.respond_to?(:size) || node.size != 1
         node = node[0]
       end
 
