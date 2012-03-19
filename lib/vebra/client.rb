@@ -3,13 +3,10 @@ module Vebra
 
     attr_reader :auth, :config
 
-    # client = Vebra::Client.new({
-    #   :data_feed_id => 'ABC',
-    #   :username     => 'user',
-    #   :password     => 'pass'
-    # })
+    # client = Vebra::Client.new(:data_feed_id => 'ABC', :username => 'user', :password => 'pass')
   
-    def initialize(config)
+    def initialize(*args)
+      config = args[0]
       data_feed_id = config[:data_feed_id]
       username     = config.delete(:username)
       password     = config.delete(:password)

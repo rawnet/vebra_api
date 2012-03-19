@@ -10,11 +10,11 @@ describe Vebra::API do
     FakeWeb.register_uri(:get, 'http://webservices.vebra.com/export/ABC/v3/branch', :body => "Unauthorized", :status => ["401", "Unauthorized"])
     FakeWeb.register_uri(:get, 'http://user:pass@webservices.vebra.com/export/ABC/v3/branch', :body => "Authorized", :token => 'ABC123')
 
-    client = Vebra::Client.new({
+    client = Vebra::Client.new(
       :data_feed_id => 'ABC',
       :username     => 'user',
       :password     => 'pass'
-    })
+    )
 
     res = Vebra::API.get('http://webservices.vebra.com/export/ABC/v3/branch', client.auth).response_object
     res.code.to_i.should eq(200)
@@ -24,11 +24,11 @@ describe Vebra::API do
     FakeWeb.register_uri(:get, 'http://webservices.vebra.com/export/ABC/v3/branch', :body => "Unauthorized", :status => ["401", "Unauthorized"])
     FakeWeb.register_uri(:get, 'http://user:pass@webservices.vebra.com/export/ABC/v3/branch', :body => "Authorized", :token => 'ABC123')
 
-    client = Vebra::Client.new({
+    client = Vebra::Client.new(
       :data_feed_id => 'ABC',
       :username     => 'user',
       :password     => 'pass'
-    })
+    )
 
     Vebra::API.get('http://webservices.vebra.com/export/ABC/v3/branch', client.auth).response_object
     
@@ -39,11 +39,11 @@ describe Vebra::API do
     FakeWeb.register_uri(:get, 'http://webservices.vebra.com/export/ABC/v3/branch', :body => "Unauthorized", :status => ["401", "Unauthorized"])
     FakeWeb.register_uri(:get, 'http://user:pass@webservices.vebra.com/export/ABC/v3/branch', :body => "Authorized", :token => 'ABC123')
 
-    client = Vebra::Client.new({
+    client = Vebra::Client.new(
       :data_feed_id => 'ABC',
       :username     => 'user',
       :password     => 'pass'
-    })
+    )
 
     res = Vebra::API.get('http://webservices.vebra.com/export/ABC/v3/branch', client.auth).response_object
 
@@ -59,11 +59,11 @@ describe Vebra::API do
     FakeWeb.register_uri(:get, 'http://webservices.vebra.com/export/ABC/v3/branch', :body => "Unauthorized", :status => ["401", "Unauthorized"])
     FakeWeb.register_uri(:get, 'http://user:pass@webservices.vebra.com/export/ABC/v3/branch', :body => "Authorized", :token => 'ABC123')
 
-    client = Vebra::Client.new({
+    client = Vebra::Client.new(
       :data_feed_id => 'ABC',
       :username     => 'user',
       :password     => 'pass'
-    })
+    )
 
     res = Vebra::API.get('http://webservices.vebra.com/export/ABC/v3/branch', client.auth).response_object
 
@@ -81,11 +81,11 @@ describe Vebra::API do
     xml_response = File.open(File.join(File.dirname(__FILE__), '../support/sample_input.xml'), "rb").read
     FakeWeb.register_uri(:get, 'http://user:pass@webservices.vebra.com/export/ABC/v3/branch', :body => xml_response, :token => 'ABC123')
 
-    client = Vebra::Client.new({
+    client = Vebra::Client.new(
       :data_feed_id => 'ABC',
       :username     => 'user',
       :password     => 'pass'
-    })
+    )
 
     res = Vebra::API.get('http://webservices.vebra.com/export/ABC/v3/branch', client.auth)
     res.parsed_response.should be_kind_of(Nokogiri::XML::Document)

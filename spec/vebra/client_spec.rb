@@ -7,11 +7,11 @@ describe Vebra::Client do
   end
   
   it "should create a new Client object when provided authentication credentials" do
-    client = Vebra::Client.new({
+    client = Vebra::Client.new(
       :data_feed_id => 'ABC',
       :username     => 'user',
       :password     => 'pass'
-    })
+    )
 
     client.auth[:username].should eq('user')
     client.auth[:password].should eq('pass')
@@ -20,19 +20,18 @@ describe Vebra::Client do
   
   it "should not create a new Client object when not provided full authentication credentials" do
     lambda { Vebra::Client.new }.should raise_error
-    lambda { Vebra::Client.new({}) }.should raise_error
-    lambda { Vebra::Client.new({
+    lambda { Vebra::Client.new(
       :data_feed_id => 'ABC',
       :username     => 'user'
-    }) }.should raise_error
-    lambda { Vebra::Client.new({
+    ) }.should raise_error
+    lambda { Vebra::Client.new(
       :data_feed_id => 'ABC',
       :password     => 'pass'
-    }) }.should raise_error
-    lambda { Vebra::Client.new({
+    ) }.should raise_error
+    lambda { Vebra::Client.new(
       :username     => 'user',
       :password     => 'user'
-    }) }.should raise_error
+    ) }.should raise_error
   end
 
 end
