@@ -71,7 +71,7 @@ module Vebra
             attr_key = :value if attr_key == :text
             if !node_hash[attr_key]
               # if this attribute hasn't yet been set, set it's value
-              if collections.include?(attr_key)
+              if child_result && collections.include?(attr_key)
                 # if this key is known to hold a collection, force it
                 first_value = child_result.values.first
                 node_hash[attr_key] = first_value.respond_to?(:<<) ? first_value : [ first_value ]
