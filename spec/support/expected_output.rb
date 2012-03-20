@@ -1,6 +1,6 @@
 PropertyHash = {
   :attributes => {
-    :id => 23072663,
+    :vebra_id => 23072663,
     :property_id => 2678001,
     :system => "B",
     :firm_id => 1081,
@@ -8,6 +8,8 @@ PropertyHash = {
     :database => 2,
     :featured => 0
   },
+
+  :group => :lettings,
 
   :agent_reference => nil,
 
@@ -30,19 +32,19 @@ PropertyHash = {
   },
 
   :rm_qualifier => 0,
-  :available => Date.parse('12/03/2012'),
-  :uploaded => Date.parse('14/03/2012'),
+  :available_on => Date.parse('12/03/2012'),
+  :uploaded_on => Date.parse('14/03/2012'),
   :longitude => -0.969461,
   :latitude => 51.45601,
   :easting => 471594,
   :northing => 173563,
-  :web_status => ['For Sale', 'To Let'],
+  :status => 'To Let',
   :custom_status => "To Let",
   :comm_rent => nil,
   :premium => nil,
   :service_charge => nil,
   :rateable_value => nil,
-  :type => "House",
+  :property_type => "House",
   :furnished => "Furnished",
   :rm_type => 8,
   :let_bond => 0,
@@ -52,12 +54,12 @@ PropertyHash = {
   :bathrooms => 0,
   :user_field_1 => nil,
   :user_field_2 => 0,
-  :sold_date => nil,
-  :lease_end => nil,
+  :sold_on => nil,
+  :lease_ends_on => nil,
   :instructed => nil,
   :sold_price => nil,
-  :garden => nil,
-  :parking => nil,
+  :garden => false,
+  :parking => false,
   :ground_rent => nil,
   :commission => nil,
 

@@ -18,8 +18,8 @@ describe Vebra do
     nokogiri_xml  = Nokogiri::XML(File.open(File.join(File.dirname(__FILE__), '../support/sample_input.xml'), "rb").read)
     expected_hash = PropertyHash
     parsed_output = Vebra.parse(nokogiri_xml)
-
-    parsed_output.diff(expected_hash).should be_empty
+    diff = parsed_output.diff(expected_hash)
+    diff.should be_empty
   end
 
 end

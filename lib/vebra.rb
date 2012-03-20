@@ -19,6 +19,42 @@ module Vebra
     @@debug = true_or_false
   end
 
+  def self.debug!
+    @@debug = true
+  end
+
+  def self.tmp_dir=(tmp_dir)
+    @@tmp_dir = tmp_dir
+  end
+
+  def self.tmp_dir
+    @@tmp_dir ||= nil
+  end
+
+  # store the token to a temp directory
+  def self.set_token(client_auth)
+    return false if !Vebra.tmp_dir || !client_auth[:token]
+    filename = "vebra-#{client_auth[:username]}-token"
+    File.open(File.join(Vebra.tmp_dir, filename), 'w') do |f|
+      f.write(client_auth[:token])
+    end
+  end
+
+  # retrieve the token from the temp directory
+  def self.get_token(client_auth)
+    return false unless Vebra.tmp_dir
+    filename = "vebra-#{client_auth[:username]}-token"
+    path = File.join(Vebra.tmp_dir, filename)
+    File.exists?(path) ? File.open(path, 'r').read : false
+  end
+
+  def self.delete_token(client_auth)
+    return false unless Vebra.tmp_dir
+    filename = "vebra-#{client_auth[:username]}-token"
+    path = File.join(Vebra.tmp_dir, filename)
+    File.exists?(path) ? File.delete(path) : false
+  end
+
 end
 
 module Net

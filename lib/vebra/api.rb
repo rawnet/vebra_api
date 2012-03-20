@@ -52,21 +52,24 @@ module Vebra
 
         # monitor for 401, signalling that our token has expired
         if response.code.to_i == 401
+          puts "Vebra: encountered 401 Unauthorized (attempt ##{retries+1})" if Vebra.debugging?
           # also monitor for multiple retries, in order to prevent
           # infinite retries
           if retries >= 3
-            puts "Vebra: failed to authenticate" if Vebra.debugging?
-            return false # not sure what to return here
+            # not sure what to return here...
+            raise "Vebra: failed to authenticate"
           end
           # retry with basic auth
           retries += 1
           auth.delete(:token)
+          Vebra.delete_token(auth)
           return get(url, auth, retries)
         else
           # extract & store the token for subsequent requests
           if response['token']
             auth[:token] = response['token']
             puts "Vebra: storing API token #{auth[:token]}" if Vebra.debugging?
+            Vebra.set_token(auth)
           end
         end
 

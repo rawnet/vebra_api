@@ -127,18 +127,22 @@ module Vebra
     def mappings
       {
         'propertyid'  => 'property_id',
+        'prop_id'     => 'property_id',
         'firmid'      => 'firm_id',
         'branchid'    => 'branch_id',
         'lastchanged' => 'last_changed',
-        'solddate'    => 'sold_date',
-        'leaseend'    => 'lease_end',
+        'solddate'    => 'sold_on',
+        'leaseend'    => 'lease_ends_on',
         'soldprice'   => 'sold_price',
         'groundrent'  => 'ground_rent',
         'userfield1'  => 'user_field_1', 
         'userfield2'  => 'user_field_2' ,
         'updated'     => 'updated_at',
         'FirmID'      => 'firm_id',
-        'BranchID'    => 'branch_id'
+        'BranchID'    => 'branch_id',
+        'web_status'  => 'status',
+        'available'   => 'available_on',
+        'uploaded'    => 'uploaded_on'
       }
     end
 
@@ -216,6 +220,18 @@ module Vebra
     # some additional changes are required to better structure the data
 
     def customise(hash)
+      # was: { :attributes => { :id => #<value> } }
+      # now: { :attributes => { :vebra_id => #<value> } }
+      if hash[:attributes] && hash[:attributes][:id]
+        hash[:attributes][:vebra_id] = hash[:attributes].delete(:id)
+      end
+
+      # was: { :type => #<value> }
+      # now: { :property_type => #<value> }
+      if hash[:type]
+        hash[:property_type] = hash.delete(:type)
+      end
+
       # was: { :reference => { :agents => #<value> } }
       # now: { :agent_reference => #<value> }
       if hash[:reference] && hash[:reference].size == 1 && hash[:reference].keys.first == :agents
@@ -291,6 +307,27 @@ module Vebra
         :postcode => hash.delete(:postcode)
         }
       end
+
+      # was: { :attributes => { :database => 1 }, :web_status => ['For Sale', 'To Let'] }
+      # now: { :attributes => { :database => 1 }, :web_status => 'For Sale', :grouping => :sales }
+      if hash[:attributes] && hash[:attributes][:database]
+        hash[:group] = case hash[:attributes][:database]
+          when 1 then :sales
+          when 2 then :lettings
+        end
+
+        if hash[:status]
+          hash[:status] = hash[:status][hash[:attributes][:database]-1]
+        end
+      end
+
+      # was: { :garden => nil }
+      # now: { :garden => false }
+      hash[:garden] = !!hash[:garden] if hash.keys.include?(:garden)
+
+      # was: { :parking => nil }
+      # now: { :parking => false }
+      hash[:parking] = !!hash[:parking] if hash.keys.include?(:parking)
 
       hash
     end

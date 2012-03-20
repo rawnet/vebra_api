@@ -1,11 +1,12 @@
 module Vebra
   class Branch
 
-    attr_reader :attributes, :client
+    attr_reader :attributes, :client, :xml
 
     # branch = Vebra::Branch.new(nokogiri_xml_object, vebra_client_object)
 
     def initialize(nokogiri_xml, client)
+      @xml        = nokogiri_xml.to_xml
       @client     = client
       @attributes = Vebra.parse(nokogiri_xml)
       set_attributes!
@@ -13,7 +14,9 @@ module Vebra
 
     # Retrieve the full set of attributes for this branch
     def get_branch
-      nokogiri_xml = client.call(url).parsed_response.css('branch')
+      nokogiri_xml_full = client.call(url).parsed_response
+      @xml              = nokogiri_xml_full.to_xml
+      nokogiri_xml      = nokogiri_xml_full.css('branch')
       @attributes.merge!(Vebra.parse(nokogiri_xml))
       set_attributes!
     end

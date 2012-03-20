@@ -18,6 +18,11 @@ module Vebra
 
       @auth   = { :username => username, :password => password }
       @config = config
+
+      # if there is a saved token for this client, grab it
+      if token = Vebra.get_token(@auth)
+        @auth[:token] = token
+      end
     end
 
     # Proxy to call the appropriate method (or url) via the Vebra::API module
@@ -36,6 +41,5 @@ module Vebra
       xml = call(:branches).parsed_response
       xml.css('branches branch').map { |b| Branch.new(b, self) }
     end
-
   end
 end
