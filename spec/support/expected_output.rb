@@ -24,12 +24,13 @@ PropertyHash = {
     :display => "Market Place, Reading, Berkshire, RG1 2DE"
   },
 
-  :price => {
+  :price_attributes => {
     :qualifier => "per month",
     :currency => "GBP",
-    :rent => "pcm",
-    :value => 1000
+    :rent => "pcm"
   },
+
+  :price => 1000,
 
   :rm_qualifier => 0,
   :available_on => Date.parse('12/03/2012'),

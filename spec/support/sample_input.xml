@@ -28,7 +28,7 @@
   <service_charge />
   <rateable_value />
   <type>House</type>
-  <type>(Not Specified)</type>
+  <type>House</type>
   <furnished>0</furnished>
   <rm_type>8</rm_type>
   <let_bond>0</let_bond>

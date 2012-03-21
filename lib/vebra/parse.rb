@@ -81,7 +81,7 @@ module Vebra
               end
             elsif child_result
               # if this attribute already exists, create or extend a collection
-              if node_hash[attr_key].respond_to?(:<<)
+              if node_hash[attr_key].respond_to?(:<<) && node_hash[attr_key].respond_to?(:each)
                 # if the attribute's value is a collection already, add inject the new value
                 node_hash[attr_key] << child_result
               else
@@ -142,7 +142,8 @@ module Vebra
         'BranchID'    => 'branch_id',
         'web_status'  => 'status',
         'available'   => 'available_on',
-        'uploaded'    => 'uploaded_on'
+        'uploaded'    => 'uploaded_on',
+        'price'       => 'price_attributes'
       }
     end
 
@@ -226,10 +227,17 @@ module Vebra
         hash[:attributes][:vebra_id] = hash[:attributes].delete(:id)
       end
 
-      # was: { :type => #<value> }
+      # was: { :price_attributes => { :value => #<value>, ... } }
+      # now: { :price_attributes => { ... }, :price => #<value> }
+      if hash[:price_attributes]
+        hash[:price] = hash[:price_attributes].delete(:value)
+      end
+
+      # was: { :type => [#<value>, #<value>] } or: { :type => #<value> }
       # now: { :property_type => #<value> }
       if hash[:type]
         hash[:property_type] = hash.delete(:type)
+        hash[:property_type] = hash[:property_type].first if hash[:property_type].respond_to?(:each)
       end
 
       # was: { :reference => { :agents => #<value> } }
