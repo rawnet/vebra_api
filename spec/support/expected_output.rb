@@ -1,6 +1,5 @@
 PropertyHash = {
   :attributes => {
-    :vebra_id => 23072663,
     :property_id => 2678001,
     :system => "B",
     :firm_id => 1081,
@@ -8,6 +7,8 @@ PropertyHash = {
     :database => 2,
     :featured => 0
   },
+
+  :vebra_ref => 23072663,
 
   :group => :lettings,
 

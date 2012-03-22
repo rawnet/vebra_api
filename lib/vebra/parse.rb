@@ -127,7 +127,7 @@ module Vebra
     def mappings
       {
         'propertyid'  => 'property_id',
-        'prop_id'     => 'property_id',
+        'prop_id'     => 'vebra_ref',
         'firmid'      => 'firm_id',
         'branchid'    => 'branch_id',
         'lastchanged' => 'last_changed',
@@ -224,7 +224,7 @@ module Vebra
       # was: { :attributes => { :id => #<value> } }
       # now: { :attributes => { :vebra_id => #<value> } }
       if hash[:attributes] && hash[:attributes][:id]
-        hash[:attributes][:vebra_id] = hash[:attributes].delete(:id)
+        hash[:vebra_ref] = hash[:attributes].delete(:id)
       end
 
       # was: { :price_attributes => { :value => #<value>, ... } }
