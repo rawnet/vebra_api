@@ -259,21 +259,19 @@ module Vebra
       # was: { :bullets => [ { :value => #<value> }, { :value => #<value> } ] }
       # now: { :bullets => [ #<value>, #<value> ] }
       if hash[:bullets]
-        hash[:bullets].map! do |b|
-          b[:value]
-        end
+        hash[:bullets].map! { |b| b[:value] }
       end
 
       # was: { :paragraphs => [ #<paragraph - type a, #<paragraph - type b> ] }
       # now: { :type_a => [ #<paragraph> ], :type_b => [ #<paragraph> ] }
       if paragraphs = hash.delete(:paragraphs)
         # extract each paragraph type into separate collections
-        hash[:rooms]          = paragraphs.select { |p| p.delete(:id); p[:type] == 0; }
-        hash[:energy_reports] = paragraphs.select { |p| p.delete(:id); p[:type] == 1; }
-        hash[:disclaimers]    = paragraphs.select { |p| p.delete(:id); p[:type] == 2; }
+        hash[:rooms]          = paragraphs.select { |p| p[:type] == 0; }
+        hash[:energy_reports] = paragraphs.select { |p| p[:type] == 1; }
+        hash[:disclaimers]    = paragraphs.select { |p| p[:type] == 2; }
 
         %w( rooms energy_reports disclaimers ).map(&:to_sym).each do |paragraph_type|
-          hash[paragraph_type].each { |f| f.delete(:type) }
+          hash[paragraph_type].each { |p| p[:vebra_ref] = p.delete(:id); p.delete(:type) }
         end
       end
 
@@ -282,20 +280,20 @@ module Vebra
       if files = hash.delete(:files)
         # extract each file type into separate collections
         hash[:files] = {
-          :images              => files.select { |f| f.delete(:id); f[:type] == 0 },
-          :maps                => files.select { |f| f.delete(:id); f[:type] == 1 },
-          :floorplans          => files.select { |f| f.delete(:id); f[:type] == 2 },
-          :tours               => files.select { |f| f.delete(:id); f[:type] == 3 },
-          :ehouses             => files.select { |f| f.delete(:id); f[:type] == 4 },
-          :ipixes              => files.select { |f| f.delete(:id); f[:type] == 5 },
-          :pdfs                => files.select { |f| f.delete(:id); f[:type] == 7 },
-          :urls                => files.select { |f| f.delete(:id); f[:type] == 8 },
-          :energy_certificates => files.select { |f| f.delete(:id); f[:type] == 9 },
-          :info_packs          => files.select { |f| f.delete(:id); f[:type] == 10 }
+          :images              => files.select { |f| f[:type] == 0 },
+          :maps                => files.select { |f| f[:type] == 1 },
+          :floorplans          => files.select { |f| f[:type] == 2 },
+          :tours               => files.select { |f| f[:type] == 3 },
+          :ehouses             => files.select { |f| f[:type] == 4 },
+          :ipixes              => files.select { |f| f[:type] == 5 },
+          :pdfs                => files.select { |f| f[:type] == 7 },
+          :urls                => files.select { |f| f[:type] == 8 },
+          :energy_certificates => files.select { |f| f[:type] == 9 },
+          :info_packs          => files.select { |f| f[:type] == 10 }
         }
 
         %w( images maps floorplans tours ehouses ipixes pdfs urls energy_certificates info_packs ).map(&:to_sym).each do |file_type|
-          hash[:files][file_type].each { |f| f.delete(:type) }
+          hash[:files][file_type].each { |f| f[:vebra_ref] = f.delete(:id); f.delete(:type) }
         end
       end
 

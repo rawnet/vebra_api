@@ -95,6 +95,7 @@ PropertyHash = {
 
   :rooms => [
     {
+      :vebra_ref => 1,
       :name => "Bedroom 1",
       :file => nil,
       :dimensions => {
@@ -104,6 +105,7 @@ PropertyHash = {
       }
     },
     {
+      :vebra_ref => 2,
       :name => "Bedroom 2",
       :file => nil,
       :dimensions => {
@@ -113,6 +115,7 @@ PropertyHash = {
       }
     },
     {
+      :vebra_ref => 3,
       :name => "Bedroom 3",
       :file => nil,
       :dimensions => {
@@ -122,6 +125,7 @@ PropertyHash = {
       }
     },
     {
+      :vebra_ref => 4,
       :name => "Bedroom 4",
       :file => nil,
       :dimensions => {
@@ -131,6 +135,7 @@ PropertyHash = {
       }
     },
     {
+      :vebra_ref => 5,
       :name => "Reception 1",
       :file => nil,
       :dimensions => {
@@ -140,6 +145,7 @@ PropertyHash = {
       }
     },
     {
+      :vebra_ref => 6,
       :name => "Reception 2",
       :file => nil,
       :dimensions => {
@@ -170,6 +176,7 @@ PropertyHash = {
   :files => {
     :images => [
       {
+        :vebra_ref => 0,
         :name => nil,
         :url => "http://images.vebra.com/large/atlantis/rentals/ecimage1/002b2678001.jpg",
         :updated_at => Time.parse('14/03/2012 15:11:00')
@@ -184,6 +191,7 @@ PropertyHash = {
 
     :pdfs => [
       {
+        :vebra_ref => 1,
         :name => nil,
         :url => "http://images.vebra.com/atlantis/rentals/details/002b2678001.pdf",
         :updated_at => Time.parse('14/03/2012 15:11:00')
