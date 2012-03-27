@@ -273,6 +273,10 @@ module Vebra
         %w( rooms energy_reports disclaimers ).map(&:to_sym).each do |paragraph_type|
           hash[paragraph_type].each { |p| p[:vebra_ref] = p.delete(:id); p.delete(:type) }
         end
+
+        hash[:rooms].each do |room|
+          room[:type] = room[:name].gsub(/\s?[\d+]$/, '').downcase.gsub(/\s/, '_')
+        end
       end
 
       # was: { :files => [ #<file - type a>, #<file - type b> ] }
