@@ -83,13 +83,13 @@ PropertyHash = {
 
   :energy_performance => {
     :energy_efficiency => {
-      :current => 0,
-      :potential => 0
+      :current => 63,
+      :potential => 68
     },
 
     :environmental_impact => {
-      :current => 0,
-      :potential => 0
+      :current => 54,
+      :potential => 57
     }
   },
 
@@ -205,7 +205,20 @@ PropertyHash = {
     ],
 
     :urls => [],
-    :energy_certificates => [],
+
+    :energy_certificates => [
+      {
+        :vebra_ref => 2,
+        :name => 'Energy efficiency chart',
+        :url => 'http://images.vebra.com/home/hip/EE_0275_063_068.png'
+      },
+      {
+        :vebra_ref => 3,
+        :name => 'Environmental impact chart',
+        :url => 'http://images.vebra.com/home/hip/EI_0275_054_057.png'
+      }
+    ],
+    
     :info_packs => []
   }
 

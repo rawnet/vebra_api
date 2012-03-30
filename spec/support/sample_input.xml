@@ -58,12 +58,12 @@
   <hip>
     <energy_performance>
       <energy_efficiency>
-        <current>0</current>
-        <potential>0</potential>
+        <current>63</current>
+        <potential>68</potential>
       </energy_efficiency>
       <environmental_impact>
-        <current>0</current>
-        <potential>0</potential>
+        <current>54</current>
+        <potential>57</potential>
       </environmental_impact>
     </energy_performance>
   </hip>
@@ -151,6 +151,14 @@
       <name />
       <url>http://images.vebra.com/atlantis/rentals/details/002b2678001.pdf</url>
       <updated>14/03/2012 15:11:00</updated>
+    </file>
+    <file id="2" type="9">
+      <name>Energy efficiency chart</name>
+      <url>http://images.vebra.com/home/hip/EE_0275_063_068.png</url>
+    </file>
+    <file id="3" type="9">
+      <name>Environmental impact chart</name>
+      <url>http://images.vebra.com/home/hip/EI_0275_054_057.png</url>
     </file>
   </files>
 </property>
