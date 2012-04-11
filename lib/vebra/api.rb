@@ -31,7 +31,7 @@ module Vebra
 
       # Performs the request to the Vebra API server
       def get(url, auth, retries=0)
-        puts "Vebra: requesting #{url}" if Vebra.debugging?
+        puts "[Vebra]: requesting #{url}" if Vebra.debugging?
 
         # build a Net::HTTP request object
         uri     = URI.parse(url)
@@ -40,10 +40,10 @@ module Vebra
 
         # add authorization header (either user/pass or token based)
         if auth[:token]
-          puts "Vebra: authorizing via token" if Vebra.debugging?
+          puts "[Vebra]: authorizing via token" if Vebra.debugging?
           request.basic_token(auth[:token])
         else
-          puts "Vebra: authorizing via basic auth" if Vebra.debugging?
+          puts "[Vebra]: authorizing via basic auth" if Vebra.debugging?
           request.basic_auth(auth[:username], auth[:password])
         end
 
@@ -52,12 +52,12 @@ module Vebra
 
         # monitor for 401, signalling that our token has expired
         if response.code.to_i == 401
-          puts "Vebra: encountered 401 Unauthorized (attempt ##{retries+1})" if Vebra.debugging?
+          puts "[Vebra]: encountered 401 Unauthorized (attempt ##{retries+1})" if Vebra.debugging?
           # also monitor for multiple retries, in order to prevent
           # infinite retries
           if retries >= 3
             # not sure what to return here...
-            raise "Vebra: failed to authenticate"
+            raise "[Vebra]: failed to authenticate"
           end
           # retry with basic auth
           retries += 1
@@ -68,7 +68,7 @@ module Vebra
           # extract & store the token for subsequent requests
           if response['token']
             auth[:token] = response['token']
-            puts "Vebra: storing API token #{auth[:token]}" if Vebra.debugging?
+            puts "[Vebra]: storing API token #{auth[:token]}" if Vebra.debugging?
             Vebra.set_token(auth)
           end
         end

@@ -7,6 +7,7 @@ require "vebra/response"
 require "vebra/client"
 require "vebra/branch"
 require "vebra/property"
+require "vebra/includes"
 require "vebra/version"
 
 module Vebra
@@ -29,6 +30,10 @@ module Vebra
 
   def self.tmp_dir
     @@tmp_dir ||= nil
+  end
+
+  def self.models
+    @@models ||= {}
   end
 
   # store the token to a temp directory
