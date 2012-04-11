@@ -7,7 +7,8 @@ require "vebra/response"
 require "vebra/client"
 require "vebra/branch"
 require "vebra/property"
-require "vebra/includes"
+require "vebra/bridge"
+require "vebra/helpers"
 require "vebra/version"
 
 module Vebra

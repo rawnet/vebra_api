@@ -1,5 +1,5 @@
 module Vebra
-  module Includes
+  module Bridge
 
     def self.included(base)
       base.extend(ClassMethods)
@@ -14,9 +14,10 @@ module Vebra
       # valid attributes are determined using attr_accessible and associations;
       # if an attribute or association doesn't exist, it will be ignored
 
-      def acts_as_vebra(vebra_model)
+      def acts_as_vebra(vebra_model=nil, options={})
+        vebra_model = self.to_s.underscore.to_sym unless vebra_model
         puts "[Vebra]: acting as :#{vebra_model}" if Vebra.debugging?
-        Vebra.models[vebra_model.to_sym] = self
+        Vebra.models[vebra_model.to_sym] = options.merge(:model_class => self)
       end
 
     end

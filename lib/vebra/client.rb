@@ -13,7 +13,7 @@ module Vebra
 
       # a Vebra::Client *must* be initialized with a data feed id, username, and password
       if data_feed_id.nil? || username.nil? || password.nil?
-        raise "Vebra: configuration hash must include `data_feed_id`, `username`, and `password`"
+        raise "[Vebra]: configuration hash must include `data_feed_id`, `username`, and `password`"
       end
 
       @auth   = { :username => username, :password => password }
