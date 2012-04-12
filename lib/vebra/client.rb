@@ -1,7 +1,7 @@
 module Vebra
   class Client
 
-    attr_reader :auth, :config
+    attr_reader :auth, :config, :branch
 
     # client = Vebra::Client.new(:data_feed_id => 'ABC', :username => 'user', :password => 'pass')
   
@@ -20,7 +20,7 @@ module Vebra
       @config = config
 
       # if there is a saved token for this client, grab it
-      if token = Vebra.get_token(@auth)
+      if token = Vebra.get_token
         @auth[:token] = token
       end
     end
@@ -40,6 +40,32 @@ module Vebra
     def get_branches
       xml = call(:branches).parsed_response
       xml.css('branches branch').map { |b| Branch.new(b, self) }
+    end
+
+    # Helper method to get and cache the first branch
+    def get_branch
+      if url = Vebra.read_cache['branch_url']
+        build_branch_with_url(url)
+      else
+        fetch_and_cache_branch
+      end
+    end
+
+    private
+
+    def fetch_and_cache_branch
+      branch = get_branches.first
+      new_cache = Vebra.read_cache
+      new_cache['branch_url'] = branch.attributes[:url]
+      Vebra.write_cache(new_cache)
+      return branch
+    end
+
+    def build_branch_with_url(url)
+      branch = Vebra::Branch.allocate
+      branch.instance_variable_set("@client", Vebra.client)
+      branch.instance_variable_set("@attributes", { :url => url })
+      return branch
     end
   end
 end

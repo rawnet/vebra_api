@@ -2,67 +2,99 @@ module Vebra
   module Helpers
     class << self
 
-      def live_update(property)
-        return false unless property_class = Vebra.models[:property]
-        property_class = property_class[:model_class]
+      # fetch all properties (Vebra objects)
+      def fetch_properties
+        return false unless Vebra.client
+        branch = Vebra.client.get_branch
+        properties = if last_update = Vebra.get_last_updated_at
+          branch.get_properties_updated_since(last_update)
+        else
+          branch.get_properties
+        end
+        properties.each { |p| p.get_property }
+        return properties
+      end
+
+      # fetch and perform a live update on all properties
+      def update_properties!
+        fetch_properties.each do |property|
+          live_update!(property)
+        end
+
+        Vebra.set_last_updated_at(Time.now)
+      end
+
+      # build, update, or remove the property in the database
+      def live_update!(property)
+        property_class = Vebra.models[:property][:class].to_s.camelize.constantize
+
+        # ensure we have the full property attributes
+        property.get_property unless property.attributes[:status]
 
         # find & update or build a new property
-        property_model = property_class.find_or_initialize_by_vebra_ref(property.vebra_ref)
+        property_model = property_class.find_or_initialize_by_vebra_ref(property.attributes[:vebra_ref])
 
         # extract accessible attributes for the property
         property_accessibles = property_class.accessible_attributes.map(&:to_sym)
         property_attributes = property.attributes.inject({}) do |result, (key, value)|
           result[key] = value if property_accessibles.include?(key)
+          result
         end
 
         # update the property model's attributes
-        property_model.attributes = property_model.attributes.merge(property_attributes)
+        property_model.update_attributes(property_attributes)
 
         # find & update or build a new address
-        if address_class = Vebra.models[:address]
-          address_class = address_class[:model_class]
-          address_model = property_model.send(Vebra.models[:property][:address_method] || :address) || property_model.send("build_#{Vebra.models[:property][:address_method] || :address}")
+        if Vebra.models[:address]
+          address_class = Vebra.models[:address][:class].to_s.camelize.constantize
+          address_model = property_model.send(Vebra.models[:property][:address_method])
+          address_model = property_model.send("build_#{Vebra.models[:property][:address_method]}") unless address_model
 
           # extract accessible attributes for the address
           address_accessibles = address_class.accessible_attributes.map(&:to_sym)
           address_attributes = property.attributes[:address].inject({}) do |result, (key, value)|
             result[key] = value if address_accessibles.include?(key)
+            result
           end
 
           # update the address model's attributes
-          address_model.attributes = address_model.attributes.merge(address_attributes)
+          address_model.update_attributes(address_attributes)
         end
 
         # find & update or build new rooms
-        if room_class = Vebra.models[:room]
-          room_class = room_class[:model_class]
+        if Vebra.models[:room]
+          room_class = Vebra.models[:room][:class].to_s.camelize.constantize
 
           # accessible attributes for the rooms
           room_accessibles = room_class.accessible_attributes.map(&:to_sym)
 
           # delete any rooms which are no longer present
-          refs_to_delete = property_model.send(Vebra.models[:room][:rooms_method] || :rooms).map(&:vebra_ref) - property.attributes[:rooms].map(&:vebra_ref)
-          property_model.send(Vebra.models[:room][:rooms_method] || :rooms).each do |room|
+          property_rooms = property.attributes[:rooms] || []
+          property_model_rooms = property_model.send(Vebra.models[:property][:rooms_method])
+          refs_to_delete = property_model_rooms.map(&:vebra_ref) - property_rooms.map { |r| r[:vebra_ref] }
+          property_model_rooms.each do |room|
             room.destroy if refs_to_delete.include?(room.vebra_ref)
           end
 
           # find & update or build new rooms
-          property.attributes[:rooms].each do |room|
-            room_model = room_class.find_or_initialize_by_property_id_and_vebra_ref(property_model.id, room.vebra_ref)
+          property_rooms.each do |room|
+            room_model = room_class.find_by_property_id_and_vebra_ref(property_model.id, room[:vebra_ref])
+            room_model = property_model_rooms.build unless room_model
 
             # extract accessible attributes for the room
-            room_attributes = room.attributes.inject({}) do |result, (key, value)|
+            room_attributes = room.inject({}) do |result, (key, value)|
               result[key] = value if room_accessibles.include?(key)
+              result
             end
 
             # update the room model's attributes
-            room_model.attributes = room_model.attributes.merge(room_attributes)
+            room_model.update_attributes(room_attributes)
           end
         end
 
         # find & update or build new file attachments
-        if file_class = Vebra.models[:file]
-          file_class = file_class[:model_class]
+        if Vebra.models[:file]
+          file_class = Vebra.models[:file][:class].to_s.camelize.constantize
 
           # accessible attributes for the files
           file_accessibles = file_class.accessible_attributes.map(&:to_sym)
@@ -78,25 +110,31 @@ module Vebra
             result
           end
 
-          # delete any rooms which are no longer present
-          refs_to_delete = property_model.send(Vebra.models[:file][:files_method] || :files).map(&:vebra_ref) - property.attributes[:rooms].map(&:vebra_ref)
-          property_model.send(Vebra.models[:file][:files_method] || :files).each do |file|
+          # delete any files which are no longer present
+          property_model_files = property_model.send(Vebra.models[:property][:files_method])
+          refs_to_delete = property_model_files.map(&:vebra_ref) - property_files.map { |f| f[:vebra_ref] }
+          property_model_files.each do |file|
             file.destroy if refs_to_delete.include?(file.vebra_ref)
           end
 
           # find & update or build new files
           property_files.each do |file|
-            file_model = file_class.find_or_initialize_by_property_id_and_vebra_ref(property_model.id, file.vebra_ref)
+            file_model = property_model_files.find_by_vebra_ref(file[:vebra_ref])
+            file_model = property_model_files.build unless file_model
 
             # extract accessible attributes for the file
-            file_attributes = file.attributes.inject({}) do |result, (key, value)|
+            file_attributes = file.inject({}) do |result, (key, value)|
               result[key] = value if file_accessibles.include?(key)
+              result
             end
 
             # update the room model's attributes
-            file_model.attributes = file_model.attributes.merge(file_attributes)
+            file_model.update_attributes(file_attributes)
           end
         end
+
+        property_model.save
+        return property_model
       end
 
     end

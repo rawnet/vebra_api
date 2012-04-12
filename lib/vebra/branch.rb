@@ -9,34 +9,33 @@ module Vebra
       @xml        = nokogiri_xml.to_xml
       @client     = client
       @attributes = Vebra.parse(nokogiri_xml)
-      set_attributes!
     end
 
     # Retrieve the full set of attributes for this branch
     def get_branch
-      nokogiri_xml_full = client.call(url).parsed_response
+      nokogiri_xml_full = client.call(attributes[:url]).parsed_response
       @xml              = nokogiri_xml_full.to_xml
       nokogiri_xml      = nokogiri_xml_full.css('branch')
       @attributes.merge!(Vebra.parse(nokogiri_xml))
-      set_attributes!
     end
 
     # Call the API method to retrieve a collection of properties for this branch,
     # and build a Vebra::Property object for each
     def get_properties
-      xml = client.call("#{url}/property").parsed_response
+      xml = client.call("#{attributes[:url]}/property").parsed_response
       xml.css('properties property').map { |p| Property.new(p, self) }
     end
 
-    private
-
-    # All attributes also have method readers
-    def set_attributes!
-      @attributes.each do |key, value|
-        self.class.send(:define_method, key) do
-          @attributes[key]
-        end unless respond_to?(key)
-      end
+    # As above, but uses the API method to get only properties updated since a given date/time
+    def get_properties_updated_since(datetime)
+      year    = datetime.year
+      month   = "%02d" % datetime.month
+      day     = "%02d" % datetime.day
+      hour    = "%02d" % datetime.hour
+      minute  = "%02d" % datetime.min
+      second  = "%02d" % datetime.sec
+      xml = client.call("#{attributes[:url]}/property/#{year}/#{month}/#{day}/#{hour}/#{minute}/#{second}").parsed_response
+      xml.css('properties property').map { |p| Property.new(p, self) }
     end
 
   end

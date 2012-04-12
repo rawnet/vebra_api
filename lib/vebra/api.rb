@@ -17,6 +17,10 @@ module Vebra
         branch_url + '/property'
       end
 
+      def properties_since_url
+        branch_url + '/property/{year}/{month}/{day}/{hour}/{minute}/{second}'
+      end
+
       def property_url
         properties_url + '/{property_id}'
       end
@@ -33,9 +37,15 @@ module Vebra
       def get(url, auth, retries=0)
         puts "[Vebra]: requesting #{url}" if Vebra.debugging?
 
+        # if there is a saved token for this client, grab it
+        if token = Vebra.get_token
+          auth[:token] = token
+        end
+
         # build a Net::HTTP request object
         uri     = URI.parse(url)
         http    = Net::HTTP.new(uri.host, uri.port)
+        request = Net::HTTP::Get.new(uri.request_uri)
         request = Net::HTTP::Get.new(uri.request_uri)
 
         # add authorization header (either user/pass or token based)

@@ -1,6 +1,7 @@
 require "net/http"
 require "uri"
 require "nokogiri"
+require "vebra/config"
 require "vebra/parse"
 require "vebra/api"
 require "vebra/response"
@@ -12,55 +13,59 @@ require "vebra/helpers"
 require "vebra/version"
 
 module Vebra
+  class << self
 
-  def self.debugging?
-    @@debug ||= false
-  end
-
-  def self.debug=(true_or_false)
-    @@debug = true_or_false
-  end
-
-  def self.debug!
-    @@debug = true
-  end
-
-  def self.tmp_dir=(tmp_dir)
-    @@tmp_dir = tmp_dir
-  end
-
-  def self.tmp_dir
-    @@tmp_dir ||= nil
-  end
-
-  def self.models
-    @@models ||= {}
-  end
-
-  # store the token to a temp directory
-  def self.set_token(client_auth)
-    return false if !Vebra.tmp_dir || !client_auth[:token]
-    filename = "vebra-#{client_auth[:username]}-token"
-    File.open(File.join(Vebra.tmp_dir, filename), 'w') do |f|
-      f.write(client_auth[:token])
+    def config(&config_block)
+      config_block[Vebra::Config]
     end
-  end
 
-  # retrieve the token from the temp directory
-  def self.get_token(client_auth)
-    return false unless Vebra.tmp_dir
-    filename = "vebra-#{client_auth[:username]}-token"
-    path = File.join(Vebra.tmp_dir, filename)
-    File.exists?(path) ? File.open(path, 'r').read : false
-  end
+    def read_cache
+      return {} if !Vebra.tmp_dir
+      path = File.join(Vebra.tmp_dir, "vebra-cache.yml")
+      File.exists?(path) ? YAML.load_file(path) : {}
+    end
 
-  def self.delete_token(client_auth)
-    return false unless Vebra.tmp_dir
-    filename = "vebra-#{client_auth[:username]}-token"
-    path = File.join(Vebra.tmp_dir, filename)
-    File.exists?(path) ? File.delete(path) : false
-  end
+    def write_cache(new_cache)
+      return false if !Vebra.tmp_dir
+      path = File.join(Vebra.tmp_dir, "vebra-cache.yml")
+      File.open(path, 'w') do |f|
+        f.write(new_cache.to_yaml)
+      end
+    end
 
+    # store the token to a temp directory
+    def set_token(client_auth)
+      return false if !client_auth[:token]
+      new_cache = read_cache
+      new_cache['token'] = client_auth[:token]
+      write_cache(new_cache)
+    end
+
+    # retrieve the token from the temp directory
+    def get_token
+      read_cache['token']
+    end
+
+    # remove a stale token
+    def delete_token
+      new_cache = read_cache
+      new_cache.delete('token')
+      write_cache(new_cache)
+    end
+
+    # set the date & time when the properties were last updated
+    def set_last_updated_at(datetime)
+      new_cache = read_cache
+      new_cache['last_updated_at'] = datetime
+      write_cache(new_cache)
+    end
+
+    # get the date & time when the properties were last updated
+    def get_last_updated_at
+      read_cache['last_updated_at']
+    end
+
+  end
 end
 
 module Net
