@@ -97,7 +97,7 @@ PropertyHash = {
     {
       :vebra_ref => 1,
       :name => "Bedroom 1",
-      :type => "bedroom",
+      :room_type => "bedroom",
       :file => nil,
       :dimensions => {
         :metric => nil,
@@ -108,7 +108,7 @@ PropertyHash = {
     {
       :vebra_ref => 2,
       :name => "Bedroom 2",
-      :type => "bedroom",
+      :room_type => "bedroom",
       :file => nil,
       :dimensions => {
         :metric => nil,
@@ -119,7 +119,7 @@ PropertyHash = {
     {
       :vebra_ref => 3,
       :name => "Bedroom 3",
-      :type => "bedroom",
+      :room_type => "bedroom",
       :file => nil,
       :dimensions => {
         :metric => nil,
@@ -130,7 +130,7 @@ PropertyHash = {
     {
       :vebra_ref => 4,
       :name => "Bedroom 4",
-      :type => "bedroom",
+      :room_type => "bedroom",
       :file => nil,
       :dimensions => {
         :metric => nil,
@@ -141,7 +141,7 @@ PropertyHash = {
     {
       :vebra_ref => 5,
       :name => "Reception 1",
-      :type => "reception",
+      :room_type => "reception",
       :file => nil,
       :dimensions => {
         :metric => nil,
@@ -152,7 +152,7 @@ PropertyHash = {
     {
       :vebra_ref => 6,
       :name => "Reception 2",
-      :type => "reception",
+      :room_type => "reception",
       :file => nil,
       :dimensions => {
         :metric => nil,
