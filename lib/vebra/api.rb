@@ -72,7 +72,7 @@ module Vebra
           # retry with basic auth
           retries += 1
           auth.delete(:token)
-          Vebra.delete_token(auth)
+          Vebra.delete_token
           return get(url, auth, retries)
         else
           # extract & store the token for subsequent requests
