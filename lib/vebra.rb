@@ -8,7 +8,6 @@ require "vebra/response"
 require "vebra/client"
 require "vebra/branch"
 require "vebra/property"
-require "vebra/bridge"
 require "vebra/helpers"
 require "vebra/version"
 
