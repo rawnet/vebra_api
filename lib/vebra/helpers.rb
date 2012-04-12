@@ -3,10 +3,11 @@ module Vebra
     class << self
 
       # fetch all properties (Vebra objects)
-      def fetch_properties
+      def fetch_properties(all_time=false)
         return false unless Vebra.client
         branch = Vebra.client.get_branch
-        properties = if last_update = Vebra.get_last_updated_at
+        last_update = Vebra.get_last_updated_at
+        properties = if !all_time && last_update
           branch.get_properties_updated_since(last_update)
         else
           branch.get_properties
@@ -20,7 +21,6 @@ module Vebra
         fetch_properties.each do |property|
           live_update!(property)
         end
-
         Vebra.set_last_updated_at(Time.now)
       end
 
