@@ -11,6 +11,8 @@ require "vebra/property"
 require "vebra/helpers"
 require "vebra/version"
 
+require "vebra/railtie" if defined?(Rails)
+
 module Vebra
   class << self
 
