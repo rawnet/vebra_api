@@ -26,7 +26,7 @@ module Vebra
       @@client_password = nil
       @@client_data_feed_id = nil
       @@debug_mode = false
-      @@tmp_dir = defined?(Rails) ? Rails.root.join('tmp') : nil
+      @@tmp_dir = nil
       @@models = {
         :property => { :class => :property, :files_method => :files, :address_method => :address, :rooms_method => :rooms },
         :address  => { :class => :address },
@@ -43,7 +43,7 @@ module Vebra
       end
 
       def tmp_dir
-        @@tmp_dir
+        @@tmp_dir ||= defined?(Rails) ? Rails.root.join('tmp') : nil
       end
 
       def model_config
