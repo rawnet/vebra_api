@@ -1,13 +1,17 @@
 # A Ruby API wrapper for the Vebra property management database
 
-## Usage
-
-Currently, the wrapper supports a single Vebra client and a single branch. Set up your client credentials in an initializer:
-
 ```ruby
 # Gemfile
 gem 'vebra', :git => 'git://github.com/rawnet/vebra_api.git'
+```
 
+*Please note:* currently the wrapper only has full support for a single client with a single branch.
+
+## Setup
+
+You can set up your client credentials either in an initializer (exposing `Vebra.client`):
+
+```ruby
 # config/initializers/vebra.rb
 Vebra.config do |config|
   # client credentials
@@ -17,11 +21,42 @@ Vebra.config do |config|
 end
 ```
 
+Or manually:
+
+```ruby
+client = Vebra::Client.new(:username => 'USER01', :password => 'abc123', :data_feed_id => 'MYAPI')
+```
+
+## Basic usage
+
+```ruby
+# get a list of branches for a client (basic attributes only)
+client_branches = client.get_branches
+# => [ #<Vebra::Branch>, #<Vebra::Branch>, ... ]
+# get the full details for a branch
+branch = client_branches.first
+# => #<Vebra::Branch>
+branch.get_branch
+
+# get a list of properties for a branch (basic attributes only)
+properties = branch.get_properties
+# => [ #<Vebra::Property>, #<Vebra::Property>, ... ]
+# get the full details for a property
+property = properties.first
+# => #<Vebra::Property>
+property.get_property
+```
+
+After calling `property.get_property`, the `Vebra::Property` object contains a great deal of information about the property. For an example, please see `spec/support/expected_output.rb`
+
+## Configuration
+
 Enable debug mode (outputs to STDOUT) if you like:
 
 ```ruby
 # config/initializers/vebra.rb
 Vebra.config do |config|
+  # default: false
   config.debug = true if Rails.env.development?
 end
 ```
@@ -31,9 +66,12 @@ The gem will attempt to save persistent info such as the current active API toke
 ```ruby
 # config/initializers/vebra.rb
 Vebra.config do |config|
+  # default: Rails.root.join('tmp')
   config.tmp_dir = Rails.root.join('tmp')
 end
 ```
+
+## Advanced usage
 
 If you're running a Rails app and you're saving properties to a database, the gem can attempt to automate this process for you. By default, the gem expects the following structure in your models:
 
@@ -62,6 +100,7 @@ class File < ActiveRecord::Base
   def remote_file_url=(url)
     # handle saving the remote file locally
     # it is highly recommended that you do *not* simply link to the remote url within your app
+    # if you use Carrierwave, you don't need to define this method
   end
 end
 ```
@@ -79,7 +118,7 @@ end
 
 Vebra.config do |config|
   config.models.file_class = :attachment
-  config.models.file_attachment_method = :file # becomes "remote_file_url" to support Carrierwave (or similar)
+  config.models.file_attachment_method = :file # calls "remote_file_url"
   config.models.property_files_method = :attachments
 end
 ```
