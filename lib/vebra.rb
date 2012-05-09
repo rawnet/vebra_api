@@ -23,7 +23,7 @@ module Vebra
     def read_cache
       return {} if !Vebra.tmp_dir
       path = File.join(Vebra.tmp_dir, "vebra-cache.yml")
-      File.exists?(path) ? YAML.load_file(path) : {}
+      File.exists?(path) ? (YAML.load_file(path) || {}) : {}
     end
 
     def write_cache(new_cache)
