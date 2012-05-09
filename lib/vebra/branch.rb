@@ -23,7 +23,7 @@ module Vebra
     # and build a Vebra::Property object for each
     def get_properties
       xml = client.call("#{attributes[:url]}/property").parsed_response
-      xml.css('properties property').map { |p| Property.new(p, self) }
+      xml.css('properties property').map { |p| Vebra::Property.new(p, self) }
     end
 
     # As above, but uses the API method to get only properties updated since a given date/time
@@ -36,7 +36,7 @@ module Vebra
       second  = "%02d" % datetime.sec
       base = API.compile(API::BASE_URI, client.config, {})
       xml = client.call("#{base}/property/#{year}/#{month}/#{day}/#{hour}/#{minute}/#{second}").parsed_response
-      xml.css('properties property').map { |p| Property.new(p, self) }
+      xml.css('propertieschanged property').map { |p| Vebra::Property.new(p, self) }
     end
 
   end

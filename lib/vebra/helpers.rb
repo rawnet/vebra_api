@@ -12,16 +12,20 @@ module Vebra
         else
           branch.get_properties
         end
-        properties.each { |p| p.get_property }
+        properties.each { |p| p.get_property unless p.attributes[:action] == 'deleted' }
         return properties
       end
 
       # fetch and perform a live update on all properties
       def update_properties!
-        fetch_properties.each do |property|
+        properties = fetch_properties
+        length = properties.length
+        counter = 0
+        properties.each do |property|
+          counter += 1
           live_update!(property)
+          Vebra.set_last_updated_at(Time.now) if counter == length
         end
-        Vebra.set_last_updated_at(Time.now)
       end
 
       # build, update, or remove the property in the database
@@ -29,10 +33,15 @@ module Vebra
         property_class = Vebra.models[:property][:class].to_s.camelize.constantize
 
         # ensure we have the full property attributes
-        property.get_property unless property.attributes[:status]
+        property.get_property if !property.attributes[:status] && property.attributes[:action] != 'deleted'
 
         # find & update or build a new property
         property_model = property_class.find_or_initialize_by_vebra_ref(property.attributes[:vebra_ref])
+
+        # if the property has been deleted, mark it appropriately and move on
+        if property.attributes[:action] == 'deleted'
+          return property_model.destroy
+        end
 
         # extract accessible attributes for the property
         property_accessibles = property_class.accessible_attributes.map(&:to_sym)

@@ -128,6 +128,7 @@ module Vebra
       {
         'propertyid'  => 'property_id',
         'prop_id'     => 'vebra_ref',
+        'propid'      => 'vebra_ref',
         'firmid'      => 'firm_id',
         'branchid'    => 'branch_id',
         'lastchanged' => 'last_changed',
