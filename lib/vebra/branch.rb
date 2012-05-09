@@ -34,7 +34,7 @@ module Vebra
       hour    = "%02d" % datetime.hour
       minute  = "%02d" % datetime.min
       second  = "%02d" % datetime.sec
-      base = API.compile(API::BASE_URI, Client.config, {})
+      base = API.compile(API::BASE_URI, client.config, {})
       xml = client.call("#{base}/property/#{year}/#{month}/#{day}/#{hour}/#{minute}/#{second}").parsed_response
       xml.css('properties property').map { |p| Property.new(p, self) }
     end
