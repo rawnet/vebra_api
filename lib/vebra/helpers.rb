@@ -51,6 +51,7 @@ module Vebra
         end
 
         # update the property model's attributes
+        property_model.no_callbacks = true if property_model.respond_to?(:no_callbacks)
         property_model.update_attributes(property_attributes)
 
         # find & update or build a new address
@@ -142,6 +143,7 @@ module Vebra
           end
         end
 
+        property_model.no_callbacks = false if property_model.respond_to?(:no_callbacks)
         property_model.save
         return property_model
       end
