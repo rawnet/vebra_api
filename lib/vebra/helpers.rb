@@ -129,17 +129,22 @@ module Vebra
 
           # find & update or build new files
           property_files.each do |file|
-            file_model = property_model_files.find_by_vebra_ref(file[:vebra_ref])
-            file_model = property_model_files.build unless file_model
+            begin
+              file_model = property_model_files.find_by_vebra_ref(file[:vebra_ref])
+              file_model = property_model_files.build unless file_model
 
-            # extract accessible attributes for the file
-            file_attributes = file.inject({}) do |result, (key, value)|
-              result[key] = value if file_accessibles.include?(key)
-              result
+              # extract accessible attributes for the file
+              file_attributes = file.inject({}) do |result, (key, value)|
+                result[key] = value if file_accessibles.include?(key)
+                result
+              end
+
+              # update the room model's attributes
+              file_model.update_attributes(file_attributes)
+            rescue CarrierWave::ProcessingError => e
+              # just ignore the file
+              puts "[Vebra]: #{e.message}" if Vebra.debugging?
             end
-
-            # update the room model's attributes
-            file_model.update_attributes(file_attributes)
           end
         end
 
