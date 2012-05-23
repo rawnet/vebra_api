@@ -332,13 +332,13 @@ module Vebra
         end
       end
 
-      # was: { :garden => nil }
-      # now: { :garden => false }
-      hash[:garden] = !!hash[:garden] if hash.keys.include?(:garden)
-
-      # was: { :parking => nil }
-      # now: { :parking => false }
-      hash[:parking] = !!hash[:parking] if hash.keys.include?(:parking)
+      # was: { :garden/parking => nil } or: { :garden/parking => 0 }
+      # now: { :garden/parking => false }
+      [ :parking, :garden ].each do |key|
+        if hash.keys.include?(key)
+          hash[key] = hash[key].present? && hash[key].to_i != 0
+        end
+      end
 
       hash
     end
