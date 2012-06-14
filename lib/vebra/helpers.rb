@@ -112,9 +112,13 @@ module Vebra
           # first normalize the collection (currently nested collections)
           property_files = property.attributes[:files].inject([]) do |result, (kind, collection)|
             collection.each do |file|
-              file[:type] = kind.to_s.singularize.camelize
+              file[:type] = kind.to_s.singularize.camelize if file_accessibles.include?(:type)
               file["remote_#{Vebra.models[:file][:attachment_method]}_url".to_sym] = file.delete(:url)
-              result << file
+              # if file[:type] is set, it means the attachment file class can be subclassed. In this
+              # case we need to ensure that the subclass exists
+              unless file_accessibles.include?(:type) && !defined?("#{file_class}::#{file[:type]}".constantize)
+                result << file
+              end
             end
 
             result
