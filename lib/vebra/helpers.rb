@@ -149,7 +149,7 @@ module Vebra
 
               # update the room model's attributes
               file_model.update_attributes(file_attributes)
-            rescue CarrierWave::ProcessingError => e
+            rescue CarrierWave::ProcessingError, OpenURI::HTTPError => e
               # just ignore the file
               puts "[Vebra]: #{e.message}" if Vebra.debugging?
             end
