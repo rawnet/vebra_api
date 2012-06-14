@@ -115,9 +115,13 @@ module Vebra
               file[:type] = kind.to_s.singularize.camelize if file_accessibles.include?(:type)
               file["remote_#{Vebra.models[:file][:attachment_method]}_url".to_sym] = file.delete(:url)
               # if file[:type] is set, it means the attachment file class can be subclassed. In this
-              # case we need to ensure that the subclass exists
-              unless file_accessibles.include?(:type) && !defined?("#{file_class}::#{file[:type]}".constantize)
+              # case we need to ensure that the subclass exists. If not, we ignore this file
+              begin
+                file[:type].constantize if file_accessibles.include?(:type)
                 result << file
+              rescue NameError => e
+                # ignore - this means the subclass does not exist
+                puts "[Vebra]: #{e.message}" if Vebra.debugging?
               end
             end
 
