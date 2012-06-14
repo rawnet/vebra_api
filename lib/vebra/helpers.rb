@@ -30,7 +30,7 @@ module Vebra
 
       # build, update, or remove the property in the database
       def live_update!(property)
-        puts "[Vebra]: live updating property with Vebra ref: #{property[:vebra_ref]}" if Vebra.debugging?
+        puts "[Vebra]: live updating property with Vebra ref: #{property.attributes[:vebra_ref]}" if Vebra.debugging?
 
         property_class = Vebra.models[:property][:class].to_s.camelize.constantize
 
