@@ -23,6 +23,9 @@ module Vebra
         counter = 0
         properties.each do |property|
           counter += 1
+          if Vebra.debugging?
+            puts "[Vebra]: #{counter}/#{length}: live updating property with Vebra ref: #{property.attributes[:vebra_ref]}"
+          end
           live_update!(property)
           Vebra.set_last_updated_at(Time.now) if counter == length
         end
@@ -30,8 +33,6 @@ module Vebra
 
       # build, update, or remove the property in the database
       def live_update!(property)
-        puts "[Vebra]: live updating property with Vebra ref: #{property.attributes[:vebra_ref]}" if Vebra.debugging?
-
         property_class = Vebra.models[:property][:class].to_s.camelize.constantize
 
         # ensure we have the full property attributes
