@@ -41,6 +41,9 @@ module Vebra
         # find & update or build a new property
         property_model = property_class.find_or_initialize_by_vebra_ref(property.attributes[:vebra_ref])
 
+        # make sure property object is not empty
+        return false if !property.attributes || !property.attributes[:property_type]
+
         # if the property has been deleted, mark it appropriately and move on
         if property.attributes[:action] == 'deleted'
           return property_model.destroy
