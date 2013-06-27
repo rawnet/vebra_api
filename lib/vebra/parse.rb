@@ -22,6 +22,7 @@ module Vebra
       # searching within a document returns a node set, in which
       # case we need to retrieve the first element
       if !node.respond_to?(:element?)
+        return {} if node.empty?
         node = node[0]
       end
 
