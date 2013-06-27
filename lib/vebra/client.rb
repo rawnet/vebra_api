@@ -43,18 +43,24 @@ module Vebra
     end
 
     # Helper method to get and cache the first branch
-    def get_branch
-      if url = Vebra.read_cache['branch_url']
+    def get_branch(branch_id=nil)
+      if branch_id == nil && url = Vebra.read_cache['branch_url']
         build_branch_with_url(url)
       else
-        fetch_and_cache_branch
+        fetch_and_cache_branch(branch_id)
       end
     end
 
     private
 
-    def fetch_and_cache_branch
-      branch = get_branches.first
+    def fetch_and_cache_branch(branch_id=nil)
+      branches = get_branches
+      if branch_id
+        branch = branches.find { |b| b.attributes[:branch_id] == branch_id}
+      else
+        branch = branches.first
+      end
+
       new_cache = Vebra.read_cache
       new_cache['branch_url'] = branch.attributes[:url]
       Vebra.write_cache(new_cache)

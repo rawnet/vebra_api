@@ -3,9 +3,9 @@ module Vebra
     class << self
 
       # fetch all properties (Vebra objects)
-      def fetch_properties(all_time=false)
+      def fetch_properties(all_time=false, branch_id=nil)
         return false unless Vebra.client
-        branch = Vebra.client.get_branch
+        branch = Vebra.client.get_branch(branch_id)
         last_update = Vebra.get_last_updated_at
         properties = if !all_time && last_update
           branch.get_properties_updated_since(last_update)
@@ -17,8 +17,8 @@ module Vebra
       end
 
       # fetch and perform a live update on all properties
-      def update_properties!
-        properties = fetch_properties
+      def update_properties!(branch_id=nil)
+        properties = fetch_properties(false, branch_id)
         length = properties.length
         counter = 0
         properties.each do |property|
