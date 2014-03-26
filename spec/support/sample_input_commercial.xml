@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<property xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="24815199" propertyid="10671045" system="E" firmid="1081" branchid="1" database="5" featured="0" xsi:noNamespaceSchemaLocation="http://webservices.vebra.com/export/xsd/v3/exportapi.xsd">
+  <reference>
+    <agents>2037</agents>
+  </reference>
+  <address>
+    <name>25</name>
+    <street>Prospect Street</street>
+    <locality/>
+    <town>Caversham, Reading</town>
+    <county>Berkshire</county>
+    <postcode>RG4 8JB</postcode>
+    <custom_location/>
+    <display>Prospect Street, Caversham, Reading RG4 8JB</display>
+  </address>
+  <price qualifier="" currency="GBP">599950</price>
+  <rm_qualifier>0</rm_qualifier>
+  <available>01/01/1900</available>
+  <uploaded>12/03/2014</uploaded>
+  <longitude>-0.971708</longitude>
+  <latitude>51.46822</latitude>
+  <easting>471418</easting>
+  <northing>174917</northing>
+  <web_status>0</web_status>
+  <custom_status/>
+  <comm_rent/>
+  <premium/>
+  <service_charge/>
+  <rateable_value/>
+  <type>Investment</type>
+  <type/>
+  <furnished>3</furnished>
+  <rm_type>0</rm_type>
+  <let_bond>0</let_bond>
+  <rm_let_type_id>0</rm_let_type_id>
+  <bedrooms>0</bedrooms>
+  <receptions>0</receptions>
+  <bathrooms>0</bathrooms>
+  <userfield1/>
+  <userfield2>0</userfield2>
+  <solddate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+  <leaseend xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+  <instructed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+  <soldprice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+  <garden xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+  <parking xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+  <groundrent/>
+  <commission/>
+  <area measure="metric" unit="sqm">
+    <min>0</min>
+    <max>0</max>
+  </area>
+  <area measure="imperial" unit="sqft">
+    <min>2174</min>
+    <max>2174</max>
+  </area>
+  <description>The substantial property comprises an A1 retail unit on the ground floor with consultation rooms, storage, W.C., lobby and conservatory to the rear and leads into a rear courtyard garden which in turn leads to two further consultation rooms, a W.C. and shower room, three further spacious ancillary rooms and a large studio which benefits from direct access and off street parking for several vehicles onto North Street.There is also a very spacious two bed flat on the first and second floors.</description>
+  <hip>
+    <energy_performance>
+      <energy_efficiency>
+        <current>0</current>
+        <potential>0</potential>
+      </energy_efficiency>
+      <environmental_impact>
+        <current>0</current>
+        <potential>0</potential>
+      </environmental_impact>
+    </energy_performance>
+  </hip>
+  <paragraphs>
+    <paragraph id="1" type="0">
+      <name>Terms</name>
+      <file/>
+      <dimensions>
+        <metric/>
+        <imperial/>
+        <mixed/>
+      </dimensions>
+      <text>The property is available to purchase.</text>
+    </paragraph>
+    <paragraph id="2" type="0">
+      <name>Price</name>
+      <file/>
+      <dimensions>
+        <metric/>
+        <imperial/>
+        <mixed/>
+      </dimensions>
+      <text>&amp;pound;599,950</text>
+    </paragraph>
+    <paragraph id="3" type="0">
+      <name>Business rates</name>
+      <file/>
+      <dimensions>
+        <metric/>
+        <imperial/>
+        <mixed/>
+      </dimensions>
+      <text>We have been verbally advised that the shop and premises are assessed as follows:&lt;br/&gt;&lt;br/&gt;Rateable value &amp;pound;9,000.00&lt;br/&gt;UBR (2013/14) &amp;pound;0.471&lt;br/&gt;Rates Payable &amp;pound;4,239.00&lt;br/&gt;&lt;br/&gt;Interested parties should make their own enquiries to the local authority to verify this information along with any relief that may be applied</text>
+    </paragraph>
+    <paragraph id="4" type="0">
+      <name>VAT</name>
+      <file/>
+      <dimensions>
+        <metric/>
+        <imperial/>
+        <mixed/>
+      </dimensions>
+      <text>All figures quoted are exclusive of VAT where applicable.</text>
+    </paragraph>
+  </paragraphs>
+  <bullets>
+    <bullet id="1">A1 retail unit</bullet>
+    <bullet id="2">Residential accommodation</bullet>
+    <bullet id="3">Substantial plot</bullet>
+    <bullet id="4">Prominent location</bullet>
+    <bullet id="5">Rear access</bullet>
+    <bullet id="6">Investment development opportunity</bullet>
+  </bullets>
+  <files>
+    <file id="0" type="0">
+      <name/>
+      <url>http://alto-live.s3.amazonaws.com/GaRIwBqi59VZeUc7ZH4oJFmZW4U/Qwldpjb4_J-7PHcyLDX2a4KK0rs/Photo/[3]/xgOwkx19ouf3dhpLfv7KidmqoBk.jpg</url>
+      <updated>12/03/2014 09:48:29</updated>
+    </file>
+    <file id="1" type="7">
+      <name>25 prospect st.pdf</name>
+      <url>http://alto-live.s3.amazonaws.com/GaRIwBqi59VZeUc7ZH4oJFmZW4U/Qwldpjb4_J-7PHcyLDX2a4KK0rs/Brochure/[0]/69tjGu6G7EiV78pe8GKhvQ.pdf</url>
+      <updated>12/03/2014 09:48:29</updated>
+    </file>
+  </files>
+</property>

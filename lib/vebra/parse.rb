@@ -70,6 +70,7 @@ module Vebra
           unless child_node.name == "text" && child_result.nil?
             attr_key = (mappings[child_node.name] || child_node.name).downcase.to_sym
             attr_key = :value if attr_key == :text
+            
             if !node_hash[attr_key]
               # if this attribute hasn't yet been set, set it's value
               if child_result && collections.include?(attr_key)
@@ -322,14 +323,14 @@ module Vebra
 
       # was: { :attributes => { :database => 1 }, :web_status => ['For Sale', 'To Let'] }
       # now: { :attributes => { :database => 1 }, :web_status => 'For Sale', :grouping => :sales }
-      if hash[:attributes] && hash[:attributes][:database]
-        hash[:group] = case hash[:attributes][:database]
-          when 1 then :sales
-          when 2 then :lettings
+      if type_index(hash)
+        hash[:group] = case type_index(hash)
+          when 0 then :sales
+          when 1 then :lettings
         end
 
         if hash[:status]
-          hash[:status] = hash[:status][hash[:attributes][:database]-1]
+          hash[:status] = hash[:status][type_index(hash)]
         end
       end
 
@@ -342,6 +343,14 @@ module Vebra
       end
 
       hash
+    end
+    
+    def type_index(hash)
+      if hash[:attributes] && hash[:attributes][:database]
+        hash[:attributes][:database] == 2 ? 1 : 0
+      else
+        nil
+      end
     end
 
   end

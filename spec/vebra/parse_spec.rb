@@ -21,5 +21,12 @@ describe Vebra do
     diff = parsed_output.diff(expected_hash)
     diff.should be_empty
   end
-
+  
+  context "commercial property" do
+    it "should return a status in the parsed XML" do
+      nokogiri_xml  = Nokogiri::XML(File.open(File.join(File.dirname(__FILE__), '../support/sample_input_commercial.xml'), "rb").read)
+      parsed_output = Vebra.parse(nokogiri_xml)
+      parsed_output[:status].should_not be_nil
+    end
+  end
 end
