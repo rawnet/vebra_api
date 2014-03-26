@@ -347,7 +347,11 @@ module Vebra
     
     def type_index(hash)
       if hash[:attributes] && hash[:attributes][:database]
-        hash[:attributes][:database] == 2 ? 1 : 0
+        case hash[:attributes][:database]
+          when 1, 5 then 0 #sale
+          when 2, 118 then 1 #let
+          else 0
+        end
       else
         nil
       end
